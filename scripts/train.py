@@ -8,7 +8,7 @@ from models.pointnet import PointNet
 import sys
 
 # Получаем абсолютный путь к каталогу utils
-utils_path = os.path.join(os.path.dirname(__file__), "utils")
+utils_path = os.path.join(os.path.dirname(__file__), "../utils")
 
 # Добавляем utils в пути поиска модулей
 sys.path.append(utils_path)
