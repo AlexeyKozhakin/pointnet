@@ -5,7 +5,13 @@ import torch.nn as nn
 import torch.optim as optim
 from utils.dataset import create_dataloader
 from models.pointnet import PointNet
+import sys
 
+# Получаем абсолютный путь к каталогу utils
+utils_path = os.path.join(os.path.dirname(__file__), "utils")
+
+# Добавляем utils в пути поиска модулей
+sys.path.append(utils_path)
 
 def calculate_accuracy(outputs, labels, num_classes, selected_classes=None):
     """
