@@ -85,7 +85,7 @@ def evaluate_model(model, data_loader, criterion, num_classes, device, selected_
 
 if __name__ == "__main__":
     # Загружаем конфигурацию
-    with open("../config.json", "r") as f:
+    with open("config.json", "r") as f:
         config = json.load(f)
 
     data_dir = config["data"]["output_dir"]
@@ -116,6 +116,11 @@ if __name__ == "__main__":
         for points, labels in train_loader:
             points = points.to(config["training"]["device"]).float()  # [B, N, C]
             labels = labels.to(config["training"]["device"]).long()  # [B, N]
+            # Получаем уникальные значения
+            unique_labels = torch.unique(labels)
+
+            # Выводим их
+            print("Уникальные значения в labels:", unique_labels.tolist())
 
             optimizer.zero_grad()
             outputs = model(points)  # [B, N, num_classes]

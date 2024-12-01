@@ -50,7 +50,7 @@ class PointCloudDataset(Dataset):
 
         # data.shape = [B, num_points, num_channels]
         points = data[:, :, :self.num_channels]  # Например, x, y, z, r, g
-        labels = data[:, :, self.num_channels - 1]  # Например, classification
+        labels = data[:, :, self.num_channels]  # Например, classification
 
         if self.transform:
             points = self.transform(points)
