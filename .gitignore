@@ -1,3 +1,6 @@
+#preproc_predict
+preproc_predict/config.json
+
 # Byte-compiled / optimized / DLL files
 venv_pointnet/
 .idea
