@@ -70,8 +70,11 @@ def filter_las_file(filepath, save_filepath):
 def normalize_tile(file_path, metadata_path, pt_path, target_points):
     with laspy.open(file_path) as las:
         points = las.read()
+
         # Предположим, что points.x, points.y, points.z - это объекты типа ScaledArrayView
-        center = np.array([np.mean(np.array(points.x)), np.mean(np.array(points.y)), np.mean(np.array(points.z))])
+        center = np.array([np.mean(np.array(points.x)),
+                           np.mean(np.array(points.y)),
+                           np.mean(np.array(points.z))])
 
         # Смещение центра
         points.x -= center[0]
@@ -84,7 +87,11 @@ def normalize_tile(file_path, metadata_path, pt_path, target_points):
         else:
             indices = np.random.choice(len(points.x), target_points, replace=True)
 
+        # Выборка атрибутов
         sampled_points = points[indices]
+        sampled_rgb = np.column_stack((sampled_points.red,
+                                       sampled_points.green,
+                                       sampled_points.blue))
 
         # Сохранение метаданных
         metadata = {
@@ -96,8 +103,15 @@ def normalize_tile(file_path, metadata_path, pt_path, target_points):
             json.dump(metadata, f)
 
         # Преобразуем данные в тензоры PyTorch
-        points_tensor = torch.tensor(np.column_stack((sampled_points.x, sampled_points.y, sampled_points.z)),
-                                     dtype=torch.float32)
+        points_tensor = torch.tensor(
+            np.column_stack((
+                sampled_points.x,
+                sampled_points.y,
+                sampled_points.z,
+                sampled_rgb
+            )),
+            dtype=torch.float32
+        )
 
         # Сохраняем тензор в файл .pt
         torch.save(points_tensor, pt_path)
